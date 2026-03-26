@@ -1,6 +1,6 @@
 # =============================================================================
 # SokoloveAI ComfyUI WAN 2.2 Template for RunPod
-# Lightweight image: nodes pre-installed, models downloaded at startup
+# Lightweight image: nodes pre-installed, models linked from Network Volume
 # =============================================================================
 FROM nvidia/cuda:12.8.1-cudnn-runtime-ubuntu24.04
 
@@ -24,8 +24,8 @@ RUN pip install --break-system-packages \
     torch torchvision torchaudio \
     --index-url https://download.pytorch.org/whl/cu128
 
-# ── JupyterLab ───────────────────────────────────────────────────────────────
-RUN pip install --break-system-packages jupyterlab
+# ── JupyterLab (with terminado for web terminal) ────────────────────────────
+RUN pip install --break-system-packages jupyterlab terminado
 
 # ── ComfyUI ──────────────────────────────────────────────────────────────────
 RUN git clone https://github.com/comfyanonymous/ComfyUI.git /comfyui \
@@ -52,8 +52,6 @@ RUN cd /comfyui/custom_nodes && \
     git clone https://github.com/zhangp365/ComfyUI-utils-nodes.git && \
     # Civicomfy
     git clone https://github.com/civitai/comfy-nodes.git Civicomfy && \
-    # Sage Attention patch
-    git clone https://github.com/kijai/ComfyUI-KJNodes.git ComfyUI-KJNodes-tmp 2>/dev/null; \
     true
 
 # ── Install all node dependencies ───────────────────────────────────────────
@@ -68,13 +66,11 @@ RUN cd /comfyui/custom_nodes && \
 # ── SageAttention ────────────────────────────────────────────────────────────
 RUN pip install --break-system-packages sageattention
 
-# ── Cleanup duplicate KJNodes ────────────────────────────────────────────────
-RUN rm -rf /comfyui/custom_nodes/ComfyUI-KJNodes-tmp
-
 # ── Copy scripts and workflows ───────────────────────────────────────────────
 COPY scripts/start.sh /start.sh
 COPY scripts/download_models.sh /download_models.sh
 COPY workflows/ /comfyui/user/default/workflows/
+
 RUN chmod +x /start.sh /download_models.sh
 
 # ── Expose ports ─────────────────────────────────────────────────────────────
