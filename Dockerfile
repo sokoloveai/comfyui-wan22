@@ -74,8 +74,8 @@ COPY workflows/ /comfyui/user/default/workflows/
 RUN chmod +x /start.sh /download_models.sh
 
 # ── Expose ports ─────────────────────────────────────────────────────────────
-# ComfyUI: 8188, JupyterLab: 8889
-EXPOSE 8188 8889
+# ComfyUI: 8188, JupyterLab: 8888
+EXPOSE 8188 8888
 
 HEALTHCHECK --interval=30s --timeout=10s --start-period=120s --retries=3 \
     CMD curl -sf http://localhost:8188/system_stats || exit 1

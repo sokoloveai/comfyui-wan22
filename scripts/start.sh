@@ -13,10 +13,10 @@ echo "[*] Setting up models from Network Volume..."
 /download_models.sh
 
 # ── Start JupyterLab in background ──────────────────────────────────────────
-echo "[*] Starting JupyterLab on port 8889..."
+echo "[*] Starting JupyterLab on port 8888..."
 jupyter lab \
     --ip=0.0.0.0 \
-    --port=8889 \
+    --port=8888 \
     --no-browser \
     --allow-root \
     --NotebookApp.token='' \
