@@ -2,7 +2,7 @@
 # SokoloveAI ComfyUI WAN 2.2 Template for RunPod
 # Lightweight image: nodes pre-installed, models linked from Network Volume
 # =============================================================================
-FROM nvidia/cuda:12.8.1-cudnn-runtime-ubuntu24.04
+FROM nvidia/cuda:13.0.2-cudnn-runtime-ubuntu24.04
 
 ENV DEBIAN_FRONTEND=noninteractive
 ENV PYTHONUNBUFFERED=1
@@ -22,7 +22,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 # ── PyTorch + CUDA ───────────────────────────────────────────────────────────
 RUN pip install --break-system-packages \
     torch torchvision torchaudio \
-    --index-url https://download.pytorch.org/whl/cu128
+    --index-url https://download.pytorch.org/whl/cu130
 
 # ── JupyterLab (with terminado for web terminal) ────────────────────────────
 RUN pip install --break-system-packages jupyterlab terminado
