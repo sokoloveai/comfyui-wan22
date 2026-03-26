@@ -30,7 +30,7 @@ Docker image for RunPod with ComfyUI, WAN 2.2, and all custom nodes pre-installe
 ## Deploy on RunPod
 
 1. Create template:
-   - **Container Image**: `ghcr.io/sokoloveai/comfyui-wan22:latest`
+   - **Container Image**: `sokoloveai/comfyui-wan22:latest`
    - **Container Disk**: 20 GB
    - **Volume Disk**: 80 GB (attach network volume with models)
    - **Volume Mount Path**: `/workspace`
@@ -44,7 +44,7 @@ Docker image for RunPod with ComfyUI, WAN 2.2, and all custom nodes pre-installe
 Every push to `main` triggers GitHub Actions → builds image → pushes to GHCR with `latest` + SHA tags.
 
 ```bash
-docker pull ghcr.io/sokoloveai/comfyui-wan22:latest
+docker pull sokoloveai/comfyui-wan22:latest
 ```
 
 ## Custom LoRAs
