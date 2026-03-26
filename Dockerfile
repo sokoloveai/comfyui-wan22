@@ -77,4 +77,7 @@ RUN chmod +x /start.sh /download_models.sh
 # ComfyUI: 8188, JupyterLab: 8889
 EXPOSE 8188 8889
 
+HEALTHCHECK --interval=30s --timeout=10s --start-period=120s --retries=3 \
+    CMD curl -sf http://localhost:8188/system_stats || exit 1
+
 CMD ["/start.sh"]
