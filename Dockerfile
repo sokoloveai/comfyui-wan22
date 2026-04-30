@@ -66,10 +66,11 @@ RUN cd /comfyui/custom_nodes && \
 # ── SageAttention ────────────────────────────────────────────────────────────
 RUN pip install --break-system-packages sageattention
 
-# ── Copy scripts and workflows ───────────────────────────────────────────────
+# ── Copy scripts, workflows, and custom nodes ───────────────────────────────
 COPY scripts/start.sh /start.sh
 COPY scripts/download_models.sh /download_models.sh
 COPY workflows/ /comfyui/user/default/workflows/
+COPY custom_nodes/loras_refresh /comfyui/custom_nodes/loras_refresh
 
 RUN chmod +x /start.sh /download_models.sh
 
