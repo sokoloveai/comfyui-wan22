@@ -27,6 +27,16 @@ RUN pip install --break-system-packages \
 # ── JupyterLab (with terminado for web terminal) ────────────────────────────
 RUN pip install --break-system-packages jupyterlab terminado
 
+# ── Caddy (шлюз авторизации перед ComfyUI, FREELAPP-111) ────────────────────
+# Статический бинарник: проксирует и WebSocket, поэтому веб-интерфейс ComfyUI
+# продолжает работать за проверкой заголовка.
+ARG CADDY_VERSION=2.11.4
+RUN curl -fsSL "https://github.com/caddyserver/caddy/releases/download/v${CADDY_VERSION}/caddy_${CADDY_VERSION}_linux_amd64.tar.gz" \
+    | tar -xz -C /usr/local/bin caddy \
+    && chmod +x /usr/local/bin/caddy \
+    && mkdir -p /etc/caddy \
+    && caddy version
+
 # ── ComfyUI ──────────────────────────────────────────────────────────────────
 RUN git clone https://github.com/comfyanonymous/ComfyUI.git /comfyui \
     && cd /comfyui \
@@ -78,7 +88,9 @@ RUN chmod +x /start.sh /download_models.sh
 # ComfyUI: 8188, JupyterLab: 8888
 EXPOSE 8188 8888
 
+# С включённым шлюзом (COMFY_AUTH_TOKEN) порт 8188 без токена отвечает 401,
+# поэтому healthcheck сначала стучится во внутренний порт ComfyUI.
 HEALTHCHECK --interval=30s --timeout=10s --start-period=120s --retries=3 \
-    CMD curl -sf http://localhost:8188/system_stats || exit 1
+    CMD curl -sf http://127.0.0.1:8189/system_stats || curl -sf http://127.0.0.1:8188/system_stats || exit 1
 
 CMD ["/start.sh"]
